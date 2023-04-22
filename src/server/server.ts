@@ -6,11 +6,11 @@ const server = express();
 
 server.get('/', (req, res) => {
 
-    return res.send({
-        message: 'Hi dev'
-    });
+  return res.send({
+    message: 'Hi dev'
+  });
 
-})
+});
 
 
 
