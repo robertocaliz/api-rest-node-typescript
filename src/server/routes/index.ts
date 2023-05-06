@@ -1,28 +1,15 @@
 import { Router } from 'express';
-
-
-import { StatusCodes } from 'http-status-codes';
-
-
-const { OK } = StatusCodes;
+import { CityController } from './../controllers';
 
 
 const router = Router();
 
 
-router.get('/', (req, res) => {
-  res.send(
-    {
-      message: 'Hi dev!'
-    }
-  );
-});
-
-
-router.post('/cars', (req, res) => {
-  const car = req.body;
-  res.status(OK).json(car);
-});
+router.post('/cities', CityController.createValidation, CityController.create);
+router.get('/cities', CityController.getAllValidation, CityController.getAll);
+router.put('/cities/:id', CityController.updateByIdValidation, CityController.updateById);
+router.get('/cities/:id', CityController.getByIdValidation, CityController.getById);
+router.delete('/cities/:id', CityController.deleteByIdValidation, CityController.deleteById);
 
 
 
