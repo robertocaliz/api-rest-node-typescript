@@ -6,8 +6,8 @@ import { ICity } from '../../models';
 export const getById = async (id: number): Promise<ICity | Error> => {
   try {
 
-    const [city] = await Knex(ETableNames.cities)
-      .select('*')
+    const [city] = await Knex.select('*')
+      .from(ETableNames.cities)
       .where({ id });
 
     if (city) return city;

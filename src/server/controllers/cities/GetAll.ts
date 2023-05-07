@@ -43,7 +43,7 @@ export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) 
       });
   }
 
-  res.setHeader('access-control-expose-headers', 'x-total-cont');
+  res.setHeader('access-control-expose-headers', 'x-total-count');
   res.setHeader('x-total-count', <number>__result);
 
 

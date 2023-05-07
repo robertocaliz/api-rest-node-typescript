@@ -2,7 +2,7 @@
 import { IQueryProps } from '../../../controllers/IQueryProps';
 import { ICity } from '../../models';
 import { ETableNames } from '../../ETableNames';
-import { getById } from './GetById';
+//import { getById } from './GetById';
 import { Knex } from '../../knex';
 
 
@@ -13,27 +13,28 @@ export const getAll = async (queryProps: IQueryProps): Promise<Array<ICity> | Er
     page = 1,
     limit = 10,
     filter = '',
-    id = 0
+    //id = 0
   } = queryProps;
 
 
   try {
 
-    const cities = await Knex(ETableNames.cities)
-      .select('*')
-      .where({ id })
-      .orWhere('name', 'like', `%${filter}%`)
-      .offset((page - 1) * limit)
-      .limit(limit);
+    const cities = await Knex.select('*')
+      .from(ETableNames.cities)
+      //.where({ id })
+      .where('name', 'like', `%${filter}%`)
+      .orderBy('name')
+      .limit(limit)
+      .offset((page - 1) * limit);
 
 
-    if (id > 0 && cities.every(city => city.id !== id)) {
-      const result = await getById(id);
-      if (result instanceof Error) {
-        return result;
-      }
-      return [...cities, result];
-    }
+    // if (id > 0 && cities.every(city => city.id != id)) {
+    //   const city = await getById(id);
+    //   if (city instanceof Error) {
+    //     return city;
+    //   }
+    //   return [...cities, city];
+    // }
 
     return cities;
 

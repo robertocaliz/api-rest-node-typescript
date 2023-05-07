@@ -8,8 +8,8 @@ export const create = async (city: Omit<ICity, 'id'>): Promise<number | Error> =
 
   try {
 
-    const [id] = await Knex(ETableNames.cities)
-      .insert(city);
+    const [id] = await Knex.insert(city)
+      .into(ETableNames.cities);
 
     return id;
 

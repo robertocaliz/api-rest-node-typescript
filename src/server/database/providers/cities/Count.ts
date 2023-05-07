@@ -10,14 +10,15 @@ export const count = async (queryProps: IQueryProps): Promise<number | Error> =>
   try {
 
     const [{ count }] = await Knex(ETableNames.cities)
-      .where('name', 'like', `%${filter}%`)
-      .count<[{ count: number }]>('* as count');
+      .count({ count: 'name' })
+      .where('name', 'like', `%${filter}%`);
 
-    return count;
+
+    return <number>count;
 
   } catch (error) {
     console.log(error);
-    return new Error('Error trying to get the register quantity!');
+    return new Error('Error trying to count cities!');
   }
 
 };
