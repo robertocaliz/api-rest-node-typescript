@@ -4,8 +4,7 @@ import { ETableNames } from '../ETableNames';
 
 
 export async function up(knex: Knex) {
-
-  knex
+  return knex
     .schema
     .createTable(ETableNames.cities, table => {
       table.bigIncrements('id').primary().index();
@@ -22,5 +21,5 @@ export async function up(knex: Knex) {
 export async function down(knex: Knex) {
   return knex
     .schema
-    .dropSchema(ETableNames.cities);
+    .dropTableIfExists(ETableNames.cities);
 }
