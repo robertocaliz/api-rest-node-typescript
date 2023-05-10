@@ -12,7 +12,6 @@ export const getAllValidation = validation((getSchema) => ({
   query: getSchema<IQueryProps>(object().shape({
     page: number().integer().optional().moreThan(0),
     limit: number().integer().optional().moreThan(0),
-    id: number().integer().optional(),
     filter: string().optional()
   }))
 }));
@@ -22,33 +21,33 @@ export const getAllValidation = validation((getSchema) => ({
 export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) => {
 
 
-  const result = await CityProvider.getAll(req.query);
-  if (result instanceof Error) {
+  const cities = await CityProvider.getAll(req.query);
+  if (cities instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({
         errors: {
-          default: result.message
+          default: cities.message
         }
       });
   }
 
 
-  const __result = await CityProvider.count(req.query);
-  if (__result instanceof Error) {
+  const count = await CityProvider.count(req.query);
+  if (count instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({
         errors: {
-          default: __result.message
+          default: count.message
         }
       });
   }
 
   res.setHeader('access-control-expose-headers', 'x-total-count');
-  res.setHeader('x-total-count', <number>__result);
+  res.setHeader('x-total-count', <number>count);
 
 
 
   res.status(StatusCodes.OK)
-    .json(result);
+    .json(cities);
 
 };

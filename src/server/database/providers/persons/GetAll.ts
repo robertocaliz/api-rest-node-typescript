@@ -1,28 +1,29 @@
-
 import { IQueryProps } from '../../../controllers/IQueryProps';
-import { ICity } from '../../models';
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
+import { IPerson } from '../../models';
 
 
 
-export const getAll = async (queryProps: IQueryProps): Promise<Array<ICity> | Error> => {
+
+export const getAll = async (queryProps: IQueryProps): Promise<Array<IPerson> | Error> => {
 
   const { page = 1, limit = 10 } = queryProps;
 
   try {
 
-    const cities = await Knex.select('*')
-      .from(ETableNames.cities)
-      .orderBy('name')
+    const persons = await Knex.select('*')
+      .from(ETableNames.persons)
+      .orderBy('fullName')
       .limit(limit)
       .offset((page - 1) * limit);
 
-    return cities;
+    return persons;
+
 
   } catch (error) {
     console.log(error);
-    return new Error('Error trying to get cities!');
+    return new Error('Error trying to get persons!');
   }
 
 };

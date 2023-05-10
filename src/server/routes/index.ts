@@ -14,6 +14,7 @@ router.delete('/cities/:id', CityController.deleteByIdValidation, CityController
 
 
 router.post('/persons', PersonController.createValidation, PersonController.create);
+router.get('/persons', PersonController.getAllValidation, PersonController.getAll);
 router.put('/persons/:id', PersonController.updateByIdValidation, PersonController.updateById);
 router.get('/persons/:id', PersonController.getByIdValidation, PersonController.getById);
 router.delete('/persons/:id', PersonController.deleteByIdValidation, PersonController.deleteById);

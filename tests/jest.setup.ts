@@ -4,7 +4,8 @@ import { server } from '../src/server/server';
 
 
 beforeAll(async () => {
-  await Knex.migrate.latest(); // Generate tables in memory
+  await Knex.migrate.latest(); // run all migrations
+  await Knex.seed.run(); // run all seeds
   console.log('Created!');
 });
 
