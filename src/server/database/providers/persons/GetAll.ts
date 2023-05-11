@@ -8,12 +8,13 @@ import { IPerson } from '../../models';
 
 export const getAll = async (queryProps: IQueryProps): Promise<Array<IPerson> | Error> => {
 
-  const { page = 1, limit = 10 } = queryProps;
+  const { page = 1, limit = 10, filter = '' } = queryProps;
 
   try {
 
     const persons = await Knex.select('*')
       .from(ETableNames.persons)
+      .where('fullName', 'like', `%${filter}%`)
       .orderBy('fullName')
       .limit(limit)
       .offset((page - 1) * limit);

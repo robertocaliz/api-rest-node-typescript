@@ -32,7 +32,7 @@ export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) 
   }
 
 
-  const count = await CityProvider.count(req.query);
+  const count = await CityProvider.count(req.query.filter);
   if (count instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({
@@ -43,7 +43,7 @@ export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) 
   }
 
   res.setHeader('access-control-expose-headers', 'x-total-count');
-  res.setHeader('x-total-count', <number>count);
+  res.setHeader('x-total-count', count);
 
 
 
