@@ -1,3 +1,4 @@
+import { PasswordCrypto } from '../../../shared/services';
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
 import { IUser } from '../../models';
@@ -8,8 +9,11 @@ import { IUser } from '../../models';
 export const create = async (user: Omit<IUser, 'id'>): Promise<number | Error> => {
 
   try {
+    
+    const hash = await PasswordCrypto.getHash(user.password);
+
     const [id] = await Knex
-      .insert(user)
+      .insert({ ...user, password: hash })
       .into(ETableNames.users);
 
     return id;

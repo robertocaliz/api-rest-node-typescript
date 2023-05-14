@@ -4,6 +4,7 @@ import { object, string } from 'yup';
 import { UsersProvider } from '../../database/providers';
 import { StatusCodes } from 'http-status-codes';
 import { IUser } from '../../database/models';
+import { PasswordCrypto } from '../../shared/services';
 
 
 
@@ -38,7 +39,7 @@ export const signIn: RequestHandler<{}, {}, IBodyProps> = async (req, res) => {
   }
 
 
-  if (!(user) || !(user.password === password)) {
+  if (!(user) || !(await PasswordCrypto.equals(password, user.password))) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({
