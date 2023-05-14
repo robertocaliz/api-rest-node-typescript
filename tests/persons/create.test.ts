@@ -63,4 +63,22 @@ describe('person creation', () => {
 
   });
 
+
+
+  it('Do not create person with city id who does not exist', async () => {
+
+    const res = await testServer
+      .post('/persons')
+      .send({
+        fullName: 'Roberto Caliz',
+        email: 'robertocaliz72@gmail.com',
+        cityId: 99999
+      });
+
+
+    expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body).toHaveProperty('errors.default');
+
+  });
+
 });

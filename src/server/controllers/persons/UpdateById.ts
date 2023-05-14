@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { IPerson } from '../../database/models';
-import { PersonProvider } from '../../database/providers';
+import { PersonsProvider } from '../../database/providers';
 import { StatusCodes } from 'http-status-codes';
 import { validation } from '../../shared/middleware';
 import { number, object, string } from 'yup';
@@ -30,7 +30,7 @@ export const updateById: RequestHandler<IParamsProps, {}, IBodyProps> = async (r
 
   const { id = 0 } = req.params;
 
-  const result = await PersonProvider.updateById(req.body, id);
+  const result = await PersonsProvider.updateById(req.body, id);
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

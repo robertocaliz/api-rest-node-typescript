@@ -50,4 +50,22 @@ describe('person update', () => {
 
   });
 
+
+
+  it('Do not update person who does not exist', async () => {
+
+    const res = await testServer
+      .put('/persons/9999')
+      .send({
+        fullName: 'Roberto Caliz',
+        email: 'robertocaliz72@gmail.com',
+        cityId: 1
+      });
+
+    expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body).toHaveProperty('errors.default');
+
+  });
+
+
 });

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { IQueryProps } from '../IQueryProps';
 import { validation } from '../../shared/middleware';
 import { number, object, string } from 'yup';
-import { PersonProvider } from '../../database/providers';
+import { PersonsProvider } from '../../database/providers';
 import { StatusCodes } from 'http-status-codes';
 
 
@@ -19,7 +19,7 @@ export const getAllValidation = validation(getSchema => ({
 
 export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) => {
 
-  const persons = await PersonProvider.getAll(req.query);
+  const persons = await PersonsProvider.getAll(req.query);
   if (persons instanceof Error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -31,7 +31,7 @@ export const getAll: RequestHandler<{}, {}, {}, IQueryProps> = async (req, res) 
   }
 
 
-  const count = await PersonProvider.count(req.query.filter);
+  const count = await PersonsProvider.count(req.query.filter);
   if (count instanceof Error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

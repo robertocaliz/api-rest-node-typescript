@@ -6,7 +6,7 @@ import * as getAll from './GetAll';
 
 
 
-export const PersonController = {
+export const PersonsController = {
   ...create,
   ...deleteById,
   ...getById,

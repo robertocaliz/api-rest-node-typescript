@@ -37,7 +37,7 @@ describe('getting all persons', () => {
 
 
     expect(res3.statusCode).toEqual(StatusCodes.OK);
-    expect([...res3.body].length).toBeGreaterThanOrEqual(2);
+    expect(res3.body.length).toBeGreaterThanOrEqual(2);
     expect(Number(res3.header['x-total-count'])).toBeGreaterThan(0);
 
 

@@ -7,7 +7,7 @@ import * as count from './Count';
 
 
 
-export const CityProvider = {
+export const CitiesProvider = {
   ...create,
   ...updateById,
   ...deleteById,

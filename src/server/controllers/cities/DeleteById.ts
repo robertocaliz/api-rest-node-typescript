@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { validation } from '../../shared/middleware';
 import { object, number } from 'yup';
 import { StatusCodes } from 'http-status-codes';
-import { CityProvider } from '../../database/providers';
+import { CitiesProvider } from '../../database/providers';
 
 
 
@@ -20,7 +20,7 @@ export const deleteByIdValidation = validation((getSchema) => ({
 
 export const deleteById: RequestHandler<IParamsProps> = async (req, res) => {
   const { id = 0 } = req.params;
-  const result = await CityProvider.deleteById(id);
+  const result = await CitiesProvider.deleteById(id);
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { PersonProvider } from '../../database/providers';
+import { PersonsProvider } from '../../database/providers';
 import { StatusCodes } from 'http-status-codes';
 import { validation } from '../../shared/middleware';
 import { number, object } from 'yup';
@@ -21,7 +21,7 @@ export const deleteById: RequestHandler<IParamsProps> = async (req, res) => {
 
   const { id = 0 } = req.params;
 
-  const result = await PersonProvider.deleteById(id);
+  const result = await PersonsProvider.deleteById(id);
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

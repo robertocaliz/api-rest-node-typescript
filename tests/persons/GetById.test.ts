@@ -39,4 +39,18 @@ describe('getting person', () => {
 
   });
 
+
+
+  it('Do not get person who does not exist', async () => {
+
+    const res = await testServer
+      .get('/persons/9999')
+      .send();
+
+
+    expect(res.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.body).toHaveProperty('errors.default');
+
+  });
+
 });

@@ -1,23 +1,29 @@
 import { Router } from 'express';
-import { CityController, PersonController } from './../controllers';
+import { CitiesController, PersonsController, UsersController } from './../controllers';
+
 
 
 const router = Router();
 
 
-router.post('/cities', CityController.createValidation, CityController.create);
-router.get('/cities', CityController.getAllValidation, CityController.getAll);
-router.put('/cities/:id', CityController.updateByIdValidation, CityController.updateById);
-router.get('/cities/:id', CityController.getByIdValidation, CityController.getById);
-router.delete('/cities/:id', CityController.deleteByIdValidation, CityController.deleteById);
+router.post('/cities', CitiesController.createValidation, CitiesController.create);
+router.get('/cities', CitiesController.getAllValidation, CitiesController.getAll);
+router.put('/cities/:id', CitiesController.updateByIdValidation, CitiesController.updateById);
+router.get('/cities/:id', CitiesController.getByIdValidation, CitiesController.getById);
+router.delete('/cities/:id', CitiesController.deleteByIdValidation, CitiesController.deleteById);
 
 
 
-router.post('/persons', PersonController.createValidation, PersonController.create);
-router.get('/persons', PersonController.getAllValidation, PersonController.getAll);
-router.put('/persons/:id', PersonController.updateByIdValidation, PersonController.updateById);
-router.get('/persons/:id', PersonController.getByIdValidation, PersonController.getById);
-router.delete('/persons/:id', PersonController.deleteByIdValidation, PersonController.deleteById);
+router.post('/persons', PersonsController.createValidation, PersonsController.create);
+router.get('/persons', PersonsController.getAllValidation, PersonsController.getAll);
+router.put('/persons/:id', PersonsController.updateByIdValidation, PersonsController.updateById);
+router.get('/persons/:id', PersonsController.getByIdValidation, PersonsController.getById);
+router.delete('/persons/:id', PersonsController.deleteByIdValidation, PersonsController.deleteById);
+
+
+
+router.post('/sign-up', UsersController.signUpValidation, UsersController.signUp);
+router.post('/sign-in', UsersController.signInValidation, UsersController.signIn);
 
 
 

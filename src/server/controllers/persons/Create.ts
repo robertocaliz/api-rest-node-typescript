@@ -3,7 +3,7 @@ import { IPerson } from '../../database/models';
 import { validation } from '../../shared/middleware';
 import { number, object, string } from 'yup';
 import { StatusCodes } from 'http-status-codes';
-import { PersonProvider } from '../../database/providers';
+import { PersonsProvider } from '../../database/providers';
 
 
 
@@ -23,7 +23,7 @@ export const createValidation = validation(getSchema => ({
 
 export const create: RequestHandler<{}, {}, IBodyProps> = async (req, res) => {
 
-  const result = await PersonProvider.create(req.body);
+  const result = await PersonsProvider.create(req.body);
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

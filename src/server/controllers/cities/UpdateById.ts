@@ -3,7 +3,7 @@ import { validation } from '../../shared/middleware';
 import { object, string, number } from 'yup';
 import { StatusCodes } from 'http-status-codes';
 import { ICity } from '../../database/models';
-import { CityProvider } from '../../database/providers';
+import { CitiesProvider } from '../../database/providers';
 
 
 interface IBodyProps extends Omit<ICity, 'id'> { }
@@ -26,7 +26,7 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 export const updateById = async (req: Request<IParamsProps>, res: Response) => {
   const { id } = req.params;
-  const result = await CityProvider.updateById(req.body, Number(id));
+  const result = await CitiesProvider.updateById(req.body, Number(id));
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

@@ -7,7 +7,8 @@ import { IPerson } from '../../models';
 export const create = async (person: Omit<IPerson, 'id'>): Promise<number | Error> => {
 
   try {
-    const [id] = await Knex.insert(person)
+    const [id] = await Knex
+      .insert(person)
       .into(ETableNames.persons);
 
     return id;
