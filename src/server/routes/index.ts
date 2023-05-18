@@ -1,28 +1,31 @@
 import { Router } from 'express';
 import { CitiesController, PersonsController, UsersController } from './../controllers';
-
+import { ensureAuthenticated } from '../shared/middleware';
 
 
 const router = Router();
 
 
-router.post('/cities', CitiesController.createValidation, CitiesController.create);
-router.get('/cities', CitiesController.getAllValidation, CitiesController.getAll);
-router.put('/cities/:id', CitiesController.updateByIdValidation, CitiesController.updateById);
-router.get('/cities/:id', CitiesController.getByIdValidation, CitiesController.getById);
-router.delete('/cities/:id', CitiesController.deleteByIdValidation, CitiesController.deleteById);
+//Private routes
+
+router.post('/cities', ensureAuthenticated, CitiesController.createValidation, CitiesController.create);
+router.get('/cities', ensureAuthenticated, CitiesController.getAllValidation, CitiesController.getAll);
+router.put('/cities/:id', ensureAuthenticated, CitiesController.updateByIdValidation, CitiesController.updateById);
+router.get('/cities/:id', ensureAuthenticated, CitiesController.getByIdValidation, CitiesController.getById);
+router.delete('/cities/:id', ensureAuthenticated, CitiesController.deleteByIdValidation, CitiesController.deleteById);
 
 
 
-router.post('/persons', PersonsController.createValidation, PersonsController.create);
-router.get('/persons', PersonsController.getAllValidation, PersonsController.getAll);
-router.put('/persons/:id', PersonsController.updateByIdValidation, PersonsController.updateById);
-router.get('/persons/:id', PersonsController.getByIdValidation, PersonsController.getById);
-router.delete('/persons/:id', PersonsController.deleteByIdValidation, PersonsController.deleteById);
+router.post('/persons', ensureAuthenticated, PersonsController.createValidation, PersonsController.create);
+router.get('/persons', ensureAuthenticated, PersonsController.getAllValidation, PersonsController.getAll);
+router.put('/persons/:id', ensureAuthenticated, PersonsController.updateByIdValidation, PersonsController.updateById);
+router.get('/persons/:id', ensureAuthenticated, PersonsController.getByIdValidation, PersonsController.getById);
+router.delete('/persons/:id', ensureAuthenticated, PersonsController.deleteByIdValidation, PersonsController.deleteById);
 
 
+//Public routes
 
-router.post('/sign-up', UsersController.signUpValidation, UsersController.signUp);
+router.post('/sign-up', UsersController.signUpValidation, UsersController.signUp); 
 router.post('/sign-in', UsersController.signInValidation, UsersController.signIn);
 
 

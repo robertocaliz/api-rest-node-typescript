@@ -4,7 +4,7 @@ import { object, string } from 'yup';
 import { UsersProvider } from '../../database/providers';
 import { StatusCodes } from 'http-status-codes';
 import { IUser } from '../../database/models';
-import { PasswordCrypto } from '../../shared/services';
+import { JWTService, PasswordCrypto } from '../../shared/services';
 
 
 
@@ -50,7 +50,16 @@ export const signIn: RequestHandler<{}, {}, IBodyProps> = async (req, res) => {
   }
 
 
-  const accessToken = { accessToken: 'my token' };
+  const accessToken = JWTService.sign({ uid: user.id });
+  if (accessToken === JWTService.EJWTErrorMessages.SECRET_NOT_FOUND) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({
+        errors: {
+          default: 'Error trying to generate access token'
+        }
+      });
+  }
 
   res.status(StatusCodes.OK).json(accessToken);
 
