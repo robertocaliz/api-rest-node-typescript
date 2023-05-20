@@ -2,25 +2,50 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('person deletion', () => {
+describe('Person - Delete', () => {
 
-  it('delete person', async () => {
+  const accessTokenPatter = /^.{1,}\..{1,}\..{1,}$/;
+
+  let accessToken: string;
+
+
+  beforeAll(async () => {
+
+    const res = await testServer
+      .post('/sign-in')
+      .send({
+        email: 'robertotests@gmail.com',
+        password: 'testes1999'
+      });
+
+    expect(res.statusCode).toEqual(StatusCodes.OK);
+    expect(accessTokenPatter.test(res.body)).toEqual(true);
+
+
+    accessToken = res.body;
+
+
+  });
+
+
+  it('delete person by id', async () => {
 
     const res1 = await testServer
       .post('/persons')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
-        fullName: 'Roberto Caliz',
-        email: 'robertocaliz72@gmail.com',
-        cityId: 5
+        fullName: 'Marco Caliz',
+        email: 'marcocaliz@visabeira.mz',
+        cityId: 1
       });
 
-
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-    expect(Number(res1.body)).toBeGreaterThan(0);
+    expect(res1.body as number).toBeGreaterThan(0);
 
 
     const res2 = await testServer
       .delete(`/persons/${res1.body}`)
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send();
 
     expect(res2.statusCode).toEqual(StatusCodes.NO_CONTENT);
@@ -35,6 +60,7 @@ describe('person deletion', () => {
 
     const res = await testServer
       .delete('/persons/0')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send();
 
     expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -45,8 +71,9 @@ describe('person deletion', () => {
 
   it('Do not delete person who does not exist', async () => {
 
-    const res = await testServer.
-      delete('/persons/9999')
+    const res = await testServer
+      .delete('/persons/9999')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send();
 
 

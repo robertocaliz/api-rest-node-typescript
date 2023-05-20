@@ -2,11 +2,39 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('person update', () => {
+describe('Person - Update', () => {
+
+
+  const accessTokenPatter = /^.{1,}\..{1,}\..{1,}$/;
+
+
+  let accessToken: string;
+
+
+  beforeAll(async () => {
+
+    const res = await testServer
+      .post('/sign-in')
+      .send({
+        email: 'robertotests@gmail.com',
+        password: 'testes1999'
+      });
+
+    expect(res.statusCode).toEqual(StatusCodes.OK);
+    expect(accessTokenPatter.test(res.body)).toEqual(true);
+
+
+    accessToken = res.body;
+
+
+  });
+
 
   it('update person', async () => {
 
-    const rest1 = await testServer.post('/persons')
+    const rest1 = await testServer
+      .post('/persons')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         fullName: 'Roberto Caliz',
         email: 'robertocaliz72@gmail.com',
@@ -14,10 +42,13 @@ describe('person update', () => {
       });
 
     expect(rest1.statusCode).toEqual(StatusCodes.CREATED);
-    expect(Number(rest1.body)).toBeGreaterThan(0);
+    expect(rest1.body as number).toBeGreaterThan(0);
 
 
-    const res2 = await testServer.put(`/persons/${rest1.body}`)
+
+    const res2 = await testServer
+      .put(`/persons/${rest1.body}`)
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         fullName: 'Roberto Caliz',
         email: 'robertocaliz72@gmail.com',
@@ -32,9 +63,11 @@ describe('person update', () => {
 
 
 
-  it('Do not update person with invalid attributes', async () => {
+  it('Do not update person with invalid values', async () => {
 
-    const res = await testServer.put('/persons/0')
+    const res = await testServer
+      .put('/persons/0')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         fullName: 'Roberto',
         email: 'InvalidEmail',
@@ -56,6 +89,7 @@ describe('person update', () => {
 
     const res = await testServer
       .put('/persons/9999')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         fullName: 'Roberto Caliz',
         email: 'robertocaliz72@gmail.com',

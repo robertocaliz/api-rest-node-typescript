@@ -2,34 +2,60 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('City Deletion', () => {
+describe('City - Delete By Id', () => {
+
+  let accessToken: string;
+
+  const accessTokenPatter = /^.{1,}\..{1,}\..{1,}$/;
 
 
+  beforeAll(async () => {
 
-  it('Delete city with valid id', async () => {
+    const res = await testServer
+      .post('/sign-in')
+      .send({
+        email: 'robertotests@gmail.com',
+        password: 'testes1999'
+      });
 
-    const res1 = await testServer
-      .post('/cities')
-      .send({ name: 'Maputo' });
+    expect(res.statusCode).toEqual(StatusCodes.OK);
+    expect(accessTokenPatter.test(res.body)).toEqual(true);
 
-
-    expect(res1.statusCode).toEqual(StatusCodes.CREATED);
-
-
-    const res2 = await testServer
-      .delete(`/cities/${res1.body}`);
-
-
-    expect(res2.statusCode).toEqual(StatusCodes.NO_CONTENT);
+    accessToken = res.body;
 
   });
 
 
 
-  it('Do not delete city that does not exist', async () => {
+  it('Delete city by id', async () => {
+
+    const res1 = await testServer
+      .post('/cities')
+      .set({ Authorization: `Bearer ${accessToken}` })
+      .send({ name: 'Tete' });
+
+
+    expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+    expect(res1.body as number).toBeGreaterThan(0);
+
+
+    const res2 = await testServer
+      .delete(`/cities/${res1.body}`)
+      .set({ Authorization: `Bearer ${accessToken}` })
+      .send();
+
+
+    expect(res2.statusCode).toEqual(StatusCodes.NO_CONTENT);
+    expect(res2.body).toEqual({});
+
+  });
+
+
+  it('Do not delete city who does not exist', async () => {
 
     const res1 = await testServer
       .delete('/cities/9999')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send();
 
     expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -38,12 +64,13 @@ describe('City Deletion', () => {
   });
 
 
+  it('Do not delete city using invalid id', async () => {
 
-
-  it('Do not delete city with invalid id', async () => {
 
     const res1 = await testServer
-      .delete('/cities/0');
+      .delete('/cities/0')
+      .set({ Authorization: `Bearer ${accessToken}` })
+      .send();
 
 
     expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -51,7 +78,9 @@ describe('City Deletion', () => {
 
 
     const res2 = await testServer
-      .delete('/cities/aaa');
+      .delete('/cities/aaa')
+      .set({ Authorization: `Bearer ${accessToken}` })
+      .send();
 
 
     expect(res2.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -60,9 +89,9 @@ describe('City Deletion', () => {
 
 
     const res3 = await testServer
-      .delete('/cities/-1');
-
-
+      .delete('/cities/-1')
+      .set({ Authorization: `Bearer ${accessToken}` })
+      .send();
 
     expect(res3.statusCode).toEqual(StatusCodes.BAD_REQUEST);
     expect(res3.body).toHaveProperty('errors.params.id');

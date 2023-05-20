@@ -2,10 +2,11 @@ import { StatusCodes } from 'http-status-codes';
 import { testServer } from '../jest.setup';
 
 
-describe('authentication', () => {
+describe('User - sign in', () => {
 
   it('sign in', async () => {
 
+    const tokenPatter = /^.{1,}\..{1,}\..{1,}$/;
 
     const res1 = await testServer
       .post('/sign-up')
@@ -29,7 +30,7 @@ describe('authentication', () => {
 
 
     expect(res2.statusCode).toEqual(StatusCodes.OK);
-    expect(res2.body).toHaveProperty('accessToken');
+    expect(tokenPatter.test(res2.body)).toEqual(true);
 
   });
 
