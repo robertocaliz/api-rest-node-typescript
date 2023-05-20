@@ -9,27 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.deleteByIdValidation = void 0;
+exports.signUp = exports.signUpValidation = void 0;
+const users_1 = require("../../database/providers/users");
+const http_status_codes_1 = require("http-status-codes");
 const middleware_1 = require("../../shared/middleware");
 const yup_1 = require("yup");
-const http_status_codes_1 = require("http-status-codes");
-const providers_1 = require("../../database/providers");
-exports.deleteByIdValidation = (0, middleware_1.validation)((getSchema) => ({
-    params: getSchema((0, yup_1.object)().shape({
-        id: (0, yup_1.number)().integer().required().moreThan(0)
+exports.signUpValidation = (0, middleware_1.validation)(getSchema => ({
+    body: getSchema((0, yup_1.object)().shape({
+        name: (0, yup_1.string)().required().min(3),
+        email: (0, yup_1.string)().required().email().min(7),
+        password: (0, yup_1.string)().required().min(8)
     }))
 }));
-const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id = 0 } = req.params;
-    const result = yield providers_1.CitiesProvider.deleteById(id);
-    if (result instanceof Error) {
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
+const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = yield users_1.UsersProvider.create(req.body);
+    if (id instanceof Error) {
+        return res
+            .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
             .json({
             errors: {
-                default: result.message
+                default: id.message
             }
         });
     }
-    res.status(http_status_codes_1.StatusCodes.NO_CONTENT).send();
+    res.status(http_status_codes_1.StatusCodes.CREATED).json(id);
 });
-exports.deleteById = deleteById;
+exports.signUp = signUp;

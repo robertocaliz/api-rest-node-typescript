@@ -14,7 +14,7 @@ const middleware_1 = require("../../shared/middleware");
 const yup_1 = require("yup");
 const providers_1 = require("../../database/providers");
 const http_status_codes_1 = require("http-status-codes");
-exports.getAllValidation = (0, middleware_1.validation)((getSchema) => ({
+exports.getAllValidation = (0, middleware_1.validation)(getSchema => ({
     query: getSchema((0, yup_1.object)().shape({
         page: (0, yup_1.number)().integer().optional().moreThan(0),
         limit: (0, yup_1.number)().integer().optional().moreThan(0),
@@ -22,18 +22,20 @@ exports.getAllValidation = (0, middleware_1.validation)((getSchema) => ({
     }))
 }));
 const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cities = yield providers_1.CitiesProvider.getAll(req.query);
-    if (cities instanceof Error) {
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
+    const persons = yield providers_1.PersonsProvider.getAll(req.query);
+    if (persons instanceof Error) {
+        return res
+            .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
             .json({
             errors: {
-                default: cities.message
+                default: persons.message
             }
         });
     }
-    const count = yield providers_1.CitiesProvider.count(req.query.filter);
+    const count = yield providers_1.PersonsProvider.count(req.query.filter);
     if (count instanceof Error) {
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
+        return res
+            .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
             .json({
             errors: {
                 default: count.message
@@ -42,7 +44,6 @@ const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     res.setHeader('access-control-expose-headers', 'x-total-count');
     res.setHeader('x-total-count', count);
-    res.status(http_status_codes_1.StatusCodes.OK)
-        .json(cities);
+    res.status(http_status_codes_1.StatusCodes.OK).json(persons);
 });
 exports.getAll = getAll;

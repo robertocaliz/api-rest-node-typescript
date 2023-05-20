@@ -23,10 +23,36 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CitiesController = void 0;
-const create = __importStar(require("./Create"));
-const updateById = __importStar(require("./UpdateById"));
-const getAll = __importStar(require("./GetAll"));
-const getById = __importStar(require("./GetById"));
-const deleteById = __importStar(require("./DeleteById"));
-exports.CitiesController = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, create), updateById), getAll), getById), deleteById);
+exports.JWTService = void 0;
+const Jwt = __importStar(require("jsonwebtoken"));
+var EJWTErrorMessages;
+(function (EJWTErrorMessages) {
+    EJWTErrorMessages["SECRET_NOT_FOUND"] = "JWT_SECRET_NOT_FOUND";
+    EJWTErrorMessages["INVALID_TOKEN"] = "INVALID_TOKEN";
+})(EJWTErrorMessages || (EJWTErrorMessages = {}));
+const jwtSecret = process.env.JWT_SECRET;
+const sign = (data) => {
+    if (!jwtSecret)
+        return EJWTErrorMessages.SECRET_NOT_FOUND;
+    return Jwt.sign(data, jwtSecret, { expiresIn: '1h' });
+};
+const verify = (token) => {
+    if (!jwtSecret)
+        return EJWTErrorMessages.SECRET_NOT_FOUND;
+    try {
+        const payload = Jwt.verify(token, jwtSecret);
+        if (typeof payload === 'string') {
+            return EJWTErrorMessages.INVALID_TOKEN;
+        }
+        return payload;
+    }
+    catch (error) {
+        console.log(error);
+        return EJWTErrorMessages.INVALID_TOKEN;
+    }
+};
+exports.JWTService = {
+    sign,
+    verify,
+    EJWTErrorMessages
+};

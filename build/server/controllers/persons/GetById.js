@@ -9,19 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.deleteByIdValidation = void 0;
+exports.getById = exports.getByIdValidation = void 0;
+const providers_1 = require("../../database/providers");
+const http_status_codes_1 = require("http-status-codes");
 const middleware_1 = require("../../shared/middleware");
 const yup_1 = require("yup");
-const http_status_codes_1 = require("http-status-codes");
-const providers_1 = require("../../database/providers");
-exports.deleteByIdValidation = (0, middleware_1.validation)((getSchema) => ({
+exports.getByIdValidation = (0, middleware_1.validation)(getSchema => ({
     params: getSchema((0, yup_1.object)().shape({
         id: (0, yup_1.number)().integer().required().moreThan(0)
     }))
 }));
-const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id = 0 } = req.params;
-    const result = yield providers_1.CitiesProvider.deleteById(id);
+    const result = yield providers_1.PersonsProvider.getById(id);
     if (result instanceof Error) {
         return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
             .json({
@@ -30,6 +30,6 @@ const deleteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         });
     }
-    res.status(http_status_codes_1.StatusCodes.NO_CONTENT).send();
+    res.status(http_status_codes_1.StatusCodes.OK).json(result);
 });
-exports.deleteById = deleteById;
+exports.getById = getById;

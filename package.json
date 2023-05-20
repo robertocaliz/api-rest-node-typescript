@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
-    "production": "./build/index.js",
+    "production": "node ./build/index.js",
     "postinstall": "tsc",
     "test": "jest",
     "build": "tsc"
