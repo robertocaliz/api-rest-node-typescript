@@ -5,10 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
-    "production": "node ./build/index.js",
     "postinstall": "tsc",
-    "test": "jest",
-    "build": "tsc"
+    "production": "node ./build/index.js",
+    "test": "jest"
   },
   "author": "Roberto Caliz",
   "license": "ISC",
