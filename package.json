@@ -5,6 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
+    "production": "./build/index.js",
+    "postinstall": "tsc",
     "test": "jest",
     "build": "tsc"
   },
@@ -36,5 +38,8 @@
     "ts-jest": "^29.1.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
