@@ -15,7 +15,7 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
       .status(StatusCodes.UNAUTHORIZED)
       .json({
         errors: {
-          default: 'Access denied!'
+          default: 'Unauthenticated!'
         }
       });
   }
@@ -43,7 +43,7 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
       .status(StatusCodes.UNAUTHORIZED)
       .json({
         errors: {
-          default: 'Access denied!'
+          default: 'Unauthenticated!'
         }
       });
   }
