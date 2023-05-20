@@ -6,6 +6,11 @@ import { ensureAuthenticated } from '../shared/middleware';
 const router = Router();
 
 
+router.get('/', (req, res) => {
+  res.send('Hello Dev!');
+});
+
+
 //Private routes
 
 router.post('/cities', ensureAuthenticated, CitiesController.createValidation, CitiesController.create);
@@ -25,7 +30,7 @@ router.delete('/persons/:id', ensureAuthenticated, PersonsController.deleteByIdV
 
 //Public routes
 
-router.post('/sign-up', UsersController.signUpValidation, UsersController.signUp); 
+router.post('/sign-up', UsersController.signUpValidation, UsersController.signUp);
 router.post('/sign-in', UsersController.signInValidation, UsersController.signIn);
 
 
