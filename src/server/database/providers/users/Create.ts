@@ -9,12 +9,13 @@ import { IUser } from '../../models';
 export const create = async (user: Omit<IUser, 'id'>): Promise<number | Error> => {
 
   try {
-    
+
     const hash = await PasswordCrypto.getHash(user.password);
 
-    const [id] = await Knex
+    const [{ id }] = await Knex
       .insert({ ...user, password: hash })
-      .into(ETableNames.users);
+      .into(ETableNames.users)
+      .returning('id');
 
     return id;
 
