@@ -10,8 +10,8 @@ const startServer = () => {
 };
 
 
-const runMigrations = async () => {
-  return await Knex.migrate.latest();
+const runMigrations = () => {
+  return Knex.migrate.latest();
 };
 
 
@@ -22,11 +22,10 @@ const runSeeds = () => {
 
 const beforeStartServer = async () => {
   if (process.env.IS_LOCALHOST !== 'true') {
-    await runMigrations()
+    return await runMigrations()
       .then(() => {
         runSeeds();
-      })
-      .catch(console.log);
+      });
   }
 };
 
@@ -34,5 +33,6 @@ const beforeStartServer = async () => {
 beforeStartServer()
   .then(() => {
     startServer();
-  });
+  })
+  .catch(console.log);
 
