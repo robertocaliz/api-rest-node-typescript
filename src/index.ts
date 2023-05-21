@@ -15,18 +15,18 @@ const runMigrations = async () => {
 };
 
 
-const runSeeds = async () => {
-  return await Knex.seed.run();
+const runSeeds = () => {
+  Knex.seed.run();
 };
-
 
 
 const beforeStartServer = async () => {
   if (process.env.IS_LOCALHOST !== 'true') {
-    Promise.all([
-      runMigrations(),
-      runSeeds()
-    ]);
+    await runMigrations()
+      .then(() => {
+        runSeeds();
+      })
+      .catch(console.log);
   }
 };
 
