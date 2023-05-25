@@ -51,7 +51,7 @@ export const signIn: RequestHandler<{}, {}, IBodyProps> = async (req, res) => {
 
 
   const accessToken = JWTService.sign({ uid: user.id });
-  if (accessToken === JWTService.EJWTErrorMessages.SECRET_NOT_FOUND) {
+  if (accessToken === JWTService.EJWTError.SECRET_NOT_FOUND) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({

@@ -24,7 +24,6 @@ export const development: Knex.Config = {
 };
 
 
-
 export const test: Knex.Config = {
   ...development,
   connection: ':memory:'
